@@ -1,0 +1,29 @@
+{% extends "03base.html" %}
+{% block title %}标题{% end %}
+{% block body %}
+    {% if username %}
+    欢迎用户 {{ username }} 登录
+    <br>
+    <img src="/static/1.jpg" width="250" height="250">
+    <br>
+    {% else %}
+    您还没有登录
+    {% end %}
+{% include "05include.html" %}
+{{ haha() }}
+<br>
+{% set c = cal() %}
+{{ c.sum(1,2) }}
+<br>
+{% import time %}
+{{ time.time() }}
+<hr>
+{{ ui_methonds1() }}
+<br>
+{% module UiModule() %}
+<hr>
+{#{% module Advertisement() %}#}
+<br>
+
+<br>
+{% end %}

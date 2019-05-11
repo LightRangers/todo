@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>in out</title>
+</head>
+<body>
+{#{% autoescape None %}#}
+{#{{ escape(atga) }}<br>#}
+{% raw atga %}<br>
+{{ atga }}<br>
+{{ name }}<br>
+{{ 1 + 1 }}<br>
+{{ time.time() }}<br>
+{% if 1 %}
+pass
+{% end %}<br>
+<img src="{{ static_url('1.jpg') }}"/>
+</body>
+</html>

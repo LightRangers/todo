@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>post template</title>
+</head>
+<body>
+{% if msg %}
+消息：{{ msg }}<br>
+{% end %}
+{{ next_url }}<br>
+{% if username %}
+My name is {{ username }}. <br>
+{#my age is {{ age }}#}
+{% else %}
+please login
+<form action="/temp" enctype="multipart/form-data" method="post">
+{#    {% module xsrf_form_html() %}#}
+    账号：<input type="text" name="username"/><br>
+    密码：<input type="text" name="password"/><br>
+    <input type="hidden" name="next" value="{{ next_url }}"><br>
+    <input type="submit"/>
+</form>
+{% end %}
+
+</body>
+</html>
