@@ -18,3 +18,4 @@ if __name__ == '__main__':
     connection = engine.connect()
     result = connection.execute('select 1')
     print(result.fetchone())
+
