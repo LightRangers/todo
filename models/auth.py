@@ -1,7 +1,9 @@
 from datetime import datetime
 from sqlalchemy import (Column, Integer, String, DateTime, ForeignKey, )
-from models.db import Base
+from models.db import Base, DBSession
 from sqlalchemy.orm import relationship
+
+session = DBSession()
 
 
 class User(Base):
@@ -20,6 +22,12 @@ class Post(Base):
     # 建立外键关系
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship('User', backref='posts', uselist=False, cascade='all')
+
+
+def register(username, password):
+    s = DBSession()
+    s.add(User(name=username, password=password))
+    s.commit()
 
 
 if __name__ == '__main__':

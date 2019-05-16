@@ -4,6 +4,7 @@ import tornado.options
 from tornado.options import define, options
 
 from handlers.main import IndexHnadeler, ExploreHandler, PostHandler
+from handlers.account import RegisterHandler
 
 define('port', default='8000', help='listenting port', type=int)
 
@@ -13,6 +14,7 @@ class Application(tornado.web.Application):
         handlers = [
             (r'/', IndexHnadeler),
             (r'/explore', ExploreHandler),
+            (r'/signup', RegisterHandler),
             (r'/post/(?P<post_id>[0-9]+)', PostHandler),
         ]
         settings = dict(

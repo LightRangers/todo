@@ -1,0 +1,12 @@
+{% extends '03base.html' %}
+
+{% block title %}register {% end %}
+
+{% block body %}
+<form action="/signup" enctype="multipart/form-data" method="post">
+    账号：<input type="text" name="username"/><br>
+    密码：<input type="text" name="password1"/><br>
+    确认密码：<input type="text" name="password2"/><br>
+    <input type="submit"/>
+</form>
+{% end %}
