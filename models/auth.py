@@ -9,8 +9,8 @@ class User(Base):
     name = Column(String(50), unique=True, nullable=False)
     password = Column(String(50))
     createtime = Column(DateTime, default=datetime.now)
+    # email = Column(String(80))
 
 
 if __name__ == '__main__':
     Base.metadata.create_all()
-    
