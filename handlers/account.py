@@ -1,6 +1,6 @@
-from models.auth import register
 from .main import BaseHandler
-from utils.account import authenticate
+from utils.account import authenticate, register
+
 
 class RegisterHandler(BaseHandler):
     def get(self):
@@ -39,6 +39,3 @@ class LoginHandler(BaseHandler):
                     self.redirect('/')
             else:
                 self.redirect('/login?msg=密码错误')
-
-
-

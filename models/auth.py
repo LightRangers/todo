@@ -37,11 +37,5 @@ class Post(Base):
     user = relationship('User', backref='posts', uselist=False, cascade='all')
 
 
-def register(username, password):
-    s = DBSession()
-    s.add(User(name=username, password=password))
-    s.commit()
-
-
 if __name__ == '__main__':
     Base.metadata.create_all()
