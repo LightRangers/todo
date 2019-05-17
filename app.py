@@ -21,8 +21,24 @@ class Application(tornado.web.Application):
             debug=True,
             template_path='templates',
             static_path='static',
+            cookie_secret='asdasdsfecfvgweff',  # 加密cookie的内容
+            login_url='/login',  # 设置装饰器@tornado.web.authenticated重定向的url
+            # xsrf_cookies=True,  # 设置每次post提交附带xsrf信息
+            pycket={
+                'engine': 'redis',
+                'storage': {
+                    'host': 'localhost',
+                    'port': 6379,
+                    # 'password': '',
+                    'db_sessions': 5,  # redis db index
+                    # 'db_notifications': 11,
+                    'max_connections': 2 ** 30,
+                },
+                'cookies': {
+                    'expires_days': 30,
+                },
+            }
         )
-
         super().__init__(handlers, **settings)
 
 

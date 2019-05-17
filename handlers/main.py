@@ -1,4 +1,10 @@
 import tornado.web
+from pycket.session import SessionMixin
+
+
+class BaseHandler(tornado.web.RequestHandler, SessionMixin):
+    def get_current_user(self):
+        return self.session.get('todo_user', None)
 
 
 class IndexHnadeler(tornado.web.RequestHandler):
