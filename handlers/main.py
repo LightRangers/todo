@@ -1,5 +1,7 @@
 import tornado.web
+from PIL import Image
 from pycket.session import SessionMixin
+from utils.account import add_post
 
 
 class BaseHandler(tornado.web.RequestHandler, SessionMixin):
@@ -32,3 +34,26 @@ class PostHandler(tornado.web.RequestHandler):
 
     def get(self, post_id):
         self.render('post.html', post_id=post_id)
+
+
+class UploadHandler(BaseHandler):
+    @tornado.web.authenticated
+    def get(self):
+        self.render('upload.html')
+
+    @tornado.web.authenticated
+    def post(self):
+        pics = self.request.files.get('picture', [])  # 没有的话给一个空列表
+        # 设置id，默认为1
+        post_id = 1
+        for p in pics:
+            save_path = 'static/upload/{}'.format(p['filename'])
+            with open(save_path, 'wb') as f:
+                f.write(p['body'])
+            post_id = add_post('upload/{}'.format(p['filename']), self.current_user)
+            # 生成缩略图
+            im = Image.open(save_path)
+            im.thumbnail((200, 200))
+            im.save('static/upload/thumb_{}.jpg'.format(p['filename']), 'JPEG')
+
+        self.redirect('/post/{}'.format(post_id))

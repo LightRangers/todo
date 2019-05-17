@@ -22,11 +22,11 @@ def register(username, password):
 
 
 def add_post(img_url, username):
-    session = DBSession
+    session = DBSession()
     user = session.query(User).filter_by(name=username).first()
     post = Post(image_url=img_url, user=user)
-    session.add()
-    session.commit(post)
+    session.add(post)
+    session.commit()
     post_id = post.id
     session.close()
     return post_id
