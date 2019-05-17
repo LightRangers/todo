@@ -1,0 +1,15 @@
+{% extends '03base.html' %}
+
+{% block title %}login {% end %}
+
+{% block body %}
+{% if msg %}
+ERROR:{{ msg }}
+{% end %}
+
+<form action="/login" enctype="multipart/form-data" method="post">
+    账号：<input type="text" name="username"/><br>
+    密码：<input type="text" name="password"/><br>
+    <input type="submit"/>
+</form>
+{% end %}
