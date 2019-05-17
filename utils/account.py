@@ -21,6 +21,7 @@ def register(username, password):
     s.close()
 
 
+# 上传图片
 def add_post(img_url, username):
     session = DBSession()
     user = session.query(User).filter_by(name=username).first()
@@ -30,3 +31,9 @@ def add_post(img_url, username):
     post_id = post.id
     session.close()
     return post_id
+
+
+def get_all_posts():
+    session = DBSession()
+    posts = session.query(Post).all()
+    return posts

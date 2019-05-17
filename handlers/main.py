@@ -1,7 +1,7 @@
 import tornado.web
 from PIL import Image
 from pycket.session import SessionMixin
-from utils.account import add_post
+from utils.account import add_post, get_all_posts
 
 
 class BaseHandler(tornado.web.RequestHandler, SessionMixin):
@@ -15,7 +15,8 @@ class IndexHnadeler(tornado.web.RequestHandler):
     '''
 
     def get(self):
-        self.render('index.html')
+        posts = get_all_posts()
+        self.render('index.html', posts=posts)
 
 
 class ExploreHandler(tornado.web.RequestHandler):

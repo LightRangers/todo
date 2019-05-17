@@ -3,5 +3,8 @@
 {% block title %}index {% end %}
 
 {% block body %}
-首页
+首页  <br>
+{% for p in posts %}
+<img src="{{ static_url(p.image_url) }}" alt=""><br>
+{% end %}
 {% end %}
