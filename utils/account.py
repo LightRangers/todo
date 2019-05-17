@@ -37,3 +37,9 @@ def get_all_posts():
     session = DBSession()
     posts = session.query(Post).all()
     return posts
+
+
+def get_post(post_id):
+    session = DBSession()
+    post = session.query(Post).filter_by(id=post_id).first()
+    return post

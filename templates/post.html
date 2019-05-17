@@ -3,5 +3,7 @@
 {% block title %}post {% end %}
 
 {% block body %}
-post id {{ post_id }}
+post id {{ post.id }} <br>
+上传者:{{ post.user.name }}
+<img src="{{ static_url(post.image_url) }}" alt=""><br>
 {% end %}

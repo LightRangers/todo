@@ -1,7 +1,7 @@
 import tornado.web
 from PIL import Image
 from pycket.session import SessionMixin
-from utils.account import add_post, get_all_posts
+from utils.account import add_post, get_all_posts, get_post
 
 
 class BaseHandler(tornado.web.RequestHandler, SessionMixin):
@@ -34,7 +34,11 @@ class PostHandler(tornado.web.RequestHandler):
     '''
 
     def get(self, post_id):
-        self.render('post.html', post_id=post_id)
+        post = get_post(post_id)
+        if not post:
+            self.write("id错误")
+        else:
+            self.render('post.html', post=post)
 
 
 class UploadHandler(BaseHandler):
