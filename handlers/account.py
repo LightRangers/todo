@@ -32,7 +32,7 @@ class LoginHandler(BaseHandler):
             self.redirect('/login?msg=用户或密码为空')
         else:
             if authenticate(username, password):
-                self.session.set('tudo_user', 'qq')
+                self.session.set('todo_user', username)
                 if next_url:
                     self.redirect(next_url)
                 else:

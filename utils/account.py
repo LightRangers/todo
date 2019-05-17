@@ -1,4 +1,4 @@
-from models.auth import User
+from models.auth import User, Post
 from models.db import DBSession
 import hashlib
 
@@ -18,3 +18,15 @@ def register(username, password):
     s = DBSession()
     s.add(User(name=username, password=hashed(password)))
     s.commit()
+    s.close()
+
+
+def add_post(img_url, username):
+    session = DBSession
+    user = session.query(User).filter_by(name=username).first()
+    post = Post(image_url=img_url, user=user)
+    session.add()
+    session.commit(post)
+    post_id = post.id
+    session.close()
+    return post_id
