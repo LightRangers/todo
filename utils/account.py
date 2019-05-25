@@ -37,11 +37,17 @@ def add_post(img_url, thumb_url, username):
 
 
 def get_all_posts():
-    session = DBSession()
-    posts = session.query(Post).all()
+    posts = db_session.query(Post).all()
+    return posts
+
+
+def get_posts_for(username):
+    user = db_session.query(User).filter_by(name=username).first()
+    posts = db_session.query(Post).filter_by(user=user).all()
     return posts
 
 
 def get_post(post_id):
-    post = db_session.query(Post).filter_by(id=post_id).first()
+    session = DBSession()
+    post = session.query(Post).filter_by(id=post_id).first()
     return post

@@ -1,6 +1,6 @@
 import tornado.web
 from pycket.session import SessionMixin
-from utils.account import add_post, get_all_posts, get_post
+from utils.account import add_post, get_all_posts, get_post, get_posts_for
 from utils.photo import UploadImage
 
 
@@ -14,8 +14,9 @@ class IndexHnadeler(BaseHandler):
     首页，用户上传图片的展示
     '''
 
+    @tornado.web.authenticated
     def get(self):
-        posts = get_all_posts()
+        posts = get_posts_for(self.current_user)
         self.render('index.html', posts=posts)
 
 
@@ -36,10 +37,11 @@ class PostHandler(BaseHandler):
 
     def get(self, post_id):
         post = get_post(post_id)
+        user = post.user
         if not post:
             self.write("id错误")
         else:
-            self.render('post.html', post=post)
+            self.render('post.html', post=post, user=user)
 
 
 class UploadHandler(BaseHandler):
