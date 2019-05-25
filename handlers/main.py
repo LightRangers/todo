@@ -2,6 +2,7 @@ import tornado.web
 from PIL import Image
 from pycket.session import SessionMixin
 from utils.account import add_post, get_all_posts, get_post
+from utils.photo import UploadImage
 
 
 class BaseHandler(tornado.web.RequestHandler, SessionMixin):
@@ -52,13 +53,8 @@ class UploadHandler(BaseHandler):
         # 设置id，默认为1
         post_id = 1
         for p in pics:
-            save_path = 'static/upload/{}'.format(p['filename'])
-            with open(save_path, 'wb') as f:
-                f.write(p['body'])
-            post_id = add_post('upload/{}'.format(p['filename']), self.current_user)
-            # 生成缩略图
-            im = Image.open(save_path)
-            im.thumbnail((200, 200))
-            im.save('static/upload/thumb_{}.jpg'.format(p['filename']), 'JPEG')
-
+            up_img = UploadImage(p['filename'], self.settings['static_path'])
+            up_img.save_upload(p['body'])
+            up_img.make_thumb()
+            post_id = add_post(up_img.image_url, self.current_user)
         self.redirect('/post/{}'.format(post_id))
