@@ -2,8 +2,11 @@ from models.auth import User, Post
 from models.db import DBSession
 import hashlib
 
-
 # md5加密
+
+db_session = DBSession()
+
+
 def hashed(text):
     return hashlib.md5(text.encode('utf8')).hexdigest()
 
@@ -40,6 +43,5 @@ def get_all_posts():
 
 
 def get_post(post_id):
-    session = DBSession()
-    post = session.query(Post).filter_by(id=post_id).first()
+    post = db_session.query(Post).filter_by(id=post_id).first()
     return post
