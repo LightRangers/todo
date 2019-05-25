@@ -1,5 +1,4 @@
 import tornado.web
-from PIL import Image
 from pycket.session import SessionMixin
 from utils.account import add_post, get_all_posts, get_post
 from utils.photo import UploadImage
@@ -10,7 +9,7 @@ class BaseHandler(tornado.web.RequestHandler, SessionMixin):
         return self.session.get('todo_user', None)
 
 
-class IndexHnadeler(tornado.web.RequestHandler):
+class IndexHnadeler(BaseHandler):
     '''
     首页，用户上传图片的展示
     '''
@@ -20,16 +19,17 @@ class IndexHnadeler(tornado.web.RequestHandler):
         self.render('index.html', posts=posts)
 
 
-class ExploreHandler(tornado.web.RequestHandler):
+class ExploreHandler(BaseHandler):
     '''
     最近上传的图片页面
     '''
 
     def get(self):
-        self.render('explore.html')
+        posts = get_all_posts()
+        self.render('explore.html', posts=posts)
 
 
-class PostHandler(tornado.web.RequestHandler):
+class PostHandler(BaseHandler):
     '''
     单个图片详情页面
     '''
@@ -56,5 +56,5 @@ class UploadHandler(BaseHandler):
             up_img = UploadImage(p['filename'], self.settings['static_path'])
             up_img.save_upload(p['body'])
             up_img.make_thumb()
-            post_id = add_post(up_img.image_url, self.current_user)
+            post_id = add_post(up_img.image_url, up_img.thumb_url, self.current_user)
         self.redirect('/post/{}'.format(post_id))

@@ -3,5 +3,7 @@
 {% block title %}explore {% end %}
 
 {% block body %}
-explore
+{% for p in posts %}
+<img src="{{ static_url(p.thumb_url) }}" alt=""><br>
+{% end %}
 {% end %}
