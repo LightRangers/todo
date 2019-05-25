@@ -32,6 +32,7 @@ class Post(Base):
     __tablename__ = 'posts'
     id = Column(Integer, primary_key=True, autoincrement=True)
     image_url = Column(String(200))
+    thumb_url = Column(String(200))
     # 建立外键关系
     user_id = Column(Integer, ForeignKey('user.id'))
     user = relationship('User', backref='posts', uselist=False, cascade='all')
