@@ -39,3 +39,9 @@ class LoginHandler(BaseHandler):
                     self.redirect('/')
             else:
                 self.redirect('/login?msg=密码错误')
+
+
+class LogoutHandler(BaseHandler):
+    def get(self):
+        self.session.delete('todo_user')
+        self.render('logout.html')
