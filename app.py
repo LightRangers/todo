@@ -22,7 +22,7 @@ class Application(tornado.web.Application):
         settings = dict(
             debug=True,
             template_path='templates',
-            static_path='static',
+            static_path='statics',
             cookie_secret='asdasdsfecfvgweff',  # 加密cookie的内容
             login_url='/login',  # 设置装饰器@tornado.web.authenticated重定向的url
             # xsrf_cookies=True,  # 设置每次post提交附带xsrf信息
