@@ -2,8 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    {#    预先配置#}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Base{% end %}</title>
     <link rel="shortcut icon" href="{{ static_url('images/favicon.jpg') }}">
+    <!-- Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="{{ static_url('css/bootstrap.css') }}">
 </head>
 
 <body>
@@ -11,7 +15,17 @@
 <h2>当前登录用户： {{ current_user }}</h2>
 <hr>
 {% end %}
-{% block body %} this is tornado{% end %}
+<div class="container">
+    {% block body %} this is tornado{% end %}
+</div>
+
+<!-- jQuery文件 -->
+<script src="/static/js/jquery-3.3.1.slim.min.js"></script>
+<!-- Popper文件 -->
+<script src="/static/js/popper.min.js"></script>
+<!-- Bootstrap 核心 JavaScript 文件 -->
+<script src="/static/js/bootstrap.js"></script>
+
 </body>
 
 </html>

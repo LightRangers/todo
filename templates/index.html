@@ -1,11 +1,43 @@
 {% extends '03base.html' %}
 
-{% block title %}index {% end %}
+{% block title %}首页 {% end %}
 
 {% block body %}
-首页  <br>
-{% for p in posts %}
-<a href="{{ '/post/{}'.format(p.id) }}"><img src="{{ static_url(p.image_url) }}" alt=""></a>
-<br>
-{% end %}
+<div class="alert alert-danger" role="alert">
+    A simple danger alert—check it out!
+</div>
+
+<div class="alert alert-success" role="alert">
+    A simple success alert—check it out!
+</div>
+<div class="row">
+    <div class="col-md-8">
+        {% for p in posts %}
+        <a href="{{ '/post/{}'.format(p.id) }}"><img src="{{ static_url(p.image_url) }}" class="img-fluid"
+                                                     alt=""></a>
+        {% end %}
+    </div>
+    <div class="col-md-4">
+        {#            卡片#}
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="https://code.z01.com/v4/assets/img/bootstrap-stack.png" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                    card's content.</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+        {#            图文框#}
+        <figure class="figure">
+            <img src="https://code.z01.com/v4/assets/img/bootstrap-stack.png" class="figure-img img-fluid rounded"
+                 alt="...">
+            <figcaption class="figure-caption">A caption for the above image.</figcaption>
+        </figure>
+        用户：XXX XXXXXX XXXXXXXXXX
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-8 col-sm-6 col-lg-4"></div>
+</div>
 {% end %}

@@ -8,8 +8,20 @@ ERROR:{{ msg }}
 {% end %}
 
 <form action="/login" enctype="multipart/form-data" method="post">
-    账号：<input type="text" name="username"/><br>
-    密码：<input type="text" name="password"/><br>
-    <input type="submit"/>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">账号：</span>
+        </div>
+        <input type="text" class="form-control" placeholder="username" aria-label="username"
+               aria-describedby="basic-addon1">
+    </div>
+     <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">密码：</span>
+        </div>
+        <input type="text" class="form-control" placeholder="password" aria-label="password"
+               aria-describedby="basic-addon1">
+    </div>
+    <button type="button" class="btn btn-success">提交</button>
 </form>
 {% end %}
