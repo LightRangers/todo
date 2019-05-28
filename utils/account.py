@@ -1,10 +1,8 @@
 from models.auth import User, Post
-from models.db import DBSession
 import hashlib
 
-# md5加密
 
-db_session = DBSession()
+# md5加密
 
 
 def hashed(text):
