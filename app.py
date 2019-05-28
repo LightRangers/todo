@@ -3,7 +3,7 @@ import tornado.ioloop
 import tornado.options
 from tornado.options import define, options
 
-from handlers.main import IndexHnadeler, ExploreHandler, PostHandler, UploadHandler
+from handlers.main import IndexHnadeler, ExploreHandler, PostHandler, UploadHandler,ProfileHandler
 from handlers.account import RegisterHandler, LoginHandler, LogoutHandler
 
 define('port', default='8000', help='listenting port', type=int)
@@ -14,6 +14,7 @@ class Application(tornado.web.Application):
         handlers = [
             (r'/', IndexHnadeler),
             (r'/explore', ExploreHandler),
+            (r'/profile', ProfileHandler),
             (r'/signup', RegisterHandler),
             (r'/upload', UploadHandler),
             (r'/login', LoginHandler),

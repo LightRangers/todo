@@ -52,6 +52,17 @@ class PostHandler(BaseHandler):
             self.render('post.html', post=post, user=user)
 
 
+class ProfileHandler(BaseHandler):
+    '''
+    用户档案页面
+    '''
+
+    @tornado.web.authenticated
+    def get(self):
+        user = self.orm.get_user(self.current_user)
+        self.render('profile.html', user=user,like_posts=[])
+
+
 class UploadHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
