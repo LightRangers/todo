@@ -1,5 +1,5 @@
 from .main import BaseHandler
-from utils.account import authenticate, register
+from utils.account import authenticate
 
 
 class RegisterHandler(BaseHandler):
@@ -12,8 +12,9 @@ class RegisterHandler(BaseHandler):
         password2 = self.get_argument('password2', '')
 
         if username and password1 and (password1 == password2):
-            register(username, password1)
-            self.write('注册成功')
+            self.orm.register(username, password1)
+            self.db_session.set('todo_user', username)
+            self.redirect('/')
         else:
             self.write('两次密码不一致')
 

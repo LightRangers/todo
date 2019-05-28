@@ -1,6 +1,6 @@
 import tornado.web
 from pycket.session import SessionMixin
-from utils.account import add_post, get_all_posts, get_post, get_posts_for
+from utils.account import HandlerORM
 from utils.photo import UploadImage
 from models.db import DBSession
 
@@ -11,6 +11,7 @@ class BaseHandler(tornado.web.RequestHandler, SessionMixin):
 
     def prepare(self):
         self.db_session = DBSession()
+        self.orm = HandlerORM(db_session=self.db_session)
 
     def on_finish(self):
         self.db_session.close()
@@ -23,7 +24,7 @@ class IndexHnadeler(BaseHandler):
 
     @tornado.web.authenticated
     def get(self):
-        posts = get_posts_for(self.current_user)
+        posts = self.orm.get_posts_for(self.current_user)
         self.render('index.html', posts=posts)
 
 
@@ -33,7 +34,7 @@ class ExploreHandler(BaseHandler):
     '''
 
     def get(self):
-        posts = get_all_posts()
+        posts = self.orm.get_all_posts()
         self.render('explore.html', posts=posts)
 
 
@@ -43,7 +44,7 @@ class PostHandler(BaseHandler):
     '''
 
     def get(self, post_id):
-        post = get_post(post_id, self.db_session)
+        post = self.orm.get_post(post_id)
         user = post.user
         if not post:
             self.write("id错误")
@@ -65,5 +66,5 @@ class UploadHandler(BaseHandler):
             up_img = UploadImage(p['filename'], self.settings['static_path'])
             up_img.save_upload(p['body'])
             up_img.make_thumb()
-            post_id = add_post(up_img.image_url, up_img.thumb_url, self.current_user)
+            post_id = self.orm.add_post(up_img.image_url, up_img.thumb_url, self.current_user)
         self.redirect('/post/{}'.format(post_id))
