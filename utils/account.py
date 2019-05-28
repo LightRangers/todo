@@ -1,4 +1,4 @@
-from models.auth import User, Post
+from models.auth import User, Post, Like
 import hashlib
 
 
@@ -61,3 +61,22 @@ class HandlerORM:
 
         post = self.db.query(Post).filter_by(id=post_id).first()
         return post
+
+    def like_ports_for(self, username):
+        '''
+        查询用户喜欢的图片并且排除自己上传的图片
+        :param username:
+        :return:
+        '''
+        user = self.get_user(username)
+        posts = self.db.query(Post).filter(Post.id == Like.post_id, Like.user_id == user.id, Post.user_id != user.id)
+        return posts
+
+    def count_like_fot(self, post_id):
+        '''
+        查看某个图片被多少用户标为喜欢
+        :param post_id:
+        :return:
+        '''
+        count = self.db.query(Like).filter_by(post_id=post_id).count()
+        return count

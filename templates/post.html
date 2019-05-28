@@ -5,5 +5,5 @@
 {% block body %}
 post id {{ post.id }} <br>
 上传者:{{ user.name }}
-<img src="{{ static_url(post.image_url) }}" alt=""><br>
+<img src="{{ static_url(post.image_url) }}" alt=""><i class="fa fa-heart text-danger">{{ count }}</i>
 {% end %}

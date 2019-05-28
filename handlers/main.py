@@ -49,7 +49,8 @@ class PostHandler(BaseHandler):
         if not post:
             self.write("id错误")
         else:
-            self.render('post.html', post=post, user=user)
+            count = self.orm.count_like_fot(post_id)
+            self.render('post.html', post=post, user=user, count=count)
 
 
 class ProfileHandler(BaseHandler):
@@ -60,7 +61,8 @@ class ProfileHandler(BaseHandler):
     @tornado.web.authenticated
     def get(self):
         user = self.orm.get_user(self.current_user)
-        self.render('profile.html', user=user,like_posts=[])
+        like_posts = self.orm.like_ports_for(self.current_user)
+        self.render('profile.html', user=user, like_posts=like_posts)
 
 
 class UploadHandler(BaseHandler):
