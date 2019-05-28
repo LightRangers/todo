@@ -47,7 +47,6 @@ def get_posts_for(username):
     return posts
 
 
-def get_post(post_id):
-    session = DBSession()
-    post = session.query(Post).filter_by(id=post_id).first()
+def get_post(post_id, db_session):
+    post = db_session.query(Post).filter_by(id=post_id).first()
     return post

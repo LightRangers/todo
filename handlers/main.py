@@ -2,11 +2,18 @@ import tornado.web
 from pycket.session import SessionMixin
 from utils.account import add_post, get_all_posts, get_post, get_posts_for
 from utils.photo import UploadImage
+from models.db import DBSession
 
 
 class BaseHandler(tornado.web.RequestHandler, SessionMixin):
     def get_current_user(self):
         return self.session.get('todo_user', None)
+
+    def prepare(self):
+        self.db_session = DBSession()
+
+    def on_finish(self):
+        self.db_session.close()
 
 
 class IndexHnadeler(BaseHandler):
@@ -36,7 +43,7 @@ class PostHandler(BaseHandler):
     '''
 
     def get(self, post_id):
-        post = get_post(post_id)
+        post = get_post(post_id, self.db_session)
         user = post.user
         if not post:
             self.write("id错误")
