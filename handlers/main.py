@@ -60,9 +60,15 @@ class ProfileHandler(BaseHandler):
 
     @tornado.web.authenticated
     def get(self):
-        user = self.orm.get_user(self.current_user)
-        like_posts = self.orm.like_ports_for(self.current_user)
-        self.render('profile.html', user=user, like_posts=like_posts)
+        name = self.get_argument('name', None)
+        if not name:
+            name = self.current_user
+        user = self.orm.get_user(name)
+        if user:
+            like_posts = self.orm.like_ports_for(name)
+            self.render('profile.html', user=user, like_posts=like_posts)
+        else:
+            self.write('用户不存在')
 
 
 class UploadHandler(BaseHandler):
@@ -81,3 +87,5 @@ class UploadHandler(BaseHandler):
             up_img.make_thumb()
             post_id = self.orm.add_post(up_img.image_url, up_img.thumb_url, self.current_user)
         self.redirect('/post/{}'.format(post_id))
+
+
