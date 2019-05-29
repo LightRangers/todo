@@ -3,8 +3,9 @@ import tornado.ioloop
 import tornado.options
 from tornado.options import define, options
 
-from handlers.main import IndexHnadeler, ExploreHandler, PostHandler, UploadHandler,ProfileHandler
+from handlers.main import IndexHnadeler, ExploreHandler, PostHandler, UploadHandler, ProfileHandler
 from handlers.account import RegisterHandler, LoginHandler, LogoutHandler
+from handlers.chat import EchoWebSocketHandler, RoomHandler, ChatWSHandler
 
 define('port', default='8000', help='listenting port', type=int)
 
@@ -19,12 +20,15 @@ class Application(tornado.web.Application):
             (r'/upload', UploadHandler),
             (r'/login', LoginHandler),
             (r'/logout', LogoutHandler),
+            (r'/room', RoomHandler),
+            (r'/ws/echo', EchoWebSocketHandler),
+            (r'/ws', ChatWSHandler),
             (r'/post/(?P<post_id>[0-9]+)', PostHandler),
         ]
         settings = dict(
             debug=True,
             template_path='templates',
-            static_path='statics',
+            static_path='static',
             cookie_secret='asdasdsfecfvgweff',  # 加密cookie的内容
             login_url='/login',  # 设置装饰器@tornado.web.authenticated重定向的url
             # xsrf_cookies=True,  # 设置每次post提交附带xsrf信息
