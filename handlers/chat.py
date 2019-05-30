@@ -1,5 +1,7 @@
 import uuid
 
+from pycket.session import SessionMixin
+
 import tornado.websocket
 import tornado.web
 import tornado.escape
@@ -28,11 +30,14 @@ class RoomHandler(BaseHandler):
         self.render('room.html', messages=msgs)
 
 
-class ChatWSHandler(tornado.websocket.WebSocketHandler):
+class ChatWSHandler(tornado.websocket.WebSocketHandler, SessionMixin):
     """
     处理和响应  连接
     """
     waiters = set()  # 等待接受信息的用户
+
+    def get_current_user(self):
+        return self.session.get('todo_user', None)
 
     def open(self, *args, **kwargs):
         """ 新的连接打开，自动调用"""
@@ -52,7 +57,7 @@ class ChatWSHandler(tornado.websocket.WebSocketHandler):
         chat = {
             'id': str(uuid.uuid4()),
             'body': msg,
-            'username': 'username',
+            'username': self.current_user
         }
 
         chat['html'] = tornado.escape.to_basestring(self.render_string('message.html', chat=chat))
