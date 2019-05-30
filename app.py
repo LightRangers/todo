@@ -6,6 +6,7 @@ from tornado.options import define, options
 from handlers.main import IndexHnadeler, ExploreHandler, PostHandler, UploadHandler, ProfileHandler
 from handlers.account import RegisterHandler, LoginHandler, LogoutHandler
 from handlers.chat import EchoWebSocketHandler, RoomHandler, ChatWSHandler
+from handlers.service import SyncSaveHandler
 
 define('port', default='8000', help='listenting port', type=int)
 
@@ -23,6 +24,7 @@ class Application(tornado.web.Application):
             (r'/room', RoomHandler),
             (r'/ws/echo', EchoWebSocketHandler),
             (r'/ws', ChatWSHandler),
+            (r'/sync', SyncSaveHandler),
             (r'/post/(?P<post_id>[0-9]+)', PostHandler),
         ]
         settings = dict(
