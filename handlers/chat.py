@@ -1,16 +1,21 @@
 import uuid
 from datetime import datetime
+import logging
 
 from pycket.session import SessionMixin
 
 import tornado.websocket
 import tornado.web
 import tornado.escape
+from tornado.httpclient import AsyncHTTPClient
+from tornado.ioloop import IOLoop
 
 from .main import BaseHandler
 
+logging = logging.getLogger('todo_log')
 
-def make_data(handler, msg, username):
+
+def make_data(handler, msg, username='system', img_url=None, post_id=None):
     '''
         生成用来发送消息的字典
     :return:
@@ -19,6 +24,8 @@ def make_data(handler, msg, username):
         'id': str(uuid.uuid4()),
         'body': msg,
         'username': username,
+        'img_url': img_url,
+        'post_id': post_id,
         'created': str(datetime.now())
     }
     chat['html'] = tornado.escape.to_basestring(handler.render_string('message.html', chat=chat))
@@ -62,10 +69,20 @@ class ChatWSHandler(tornado.websocket.WebSocketHandler, SessionMixin):
         print("got message: {}".format(message))
         parsed = tornado.escape.json_decode(message)
         msg = parsed['body']
-        chat = make_data(self, msg, self.current_user)
-        self.send_updates(chat)
+        if msg and msg.startswith('http://'):
+            client = AsyncHTTPClient()
+            save_api_url = 'http://127.0.0.1:8000/save?save_url={}&name={}'.format(msg, self.current_user)
+            logging.info(save_api_url)
+            IOLoop.current().spawn_callback(client.fetch, save_api_url, request_timeout=120)
+            reply_msy = 'user {},url {} is processing'.format(self.current_user, msg)
+            chat = make_data(self, reply_msy)
+            self.write_message(chat)  # 只发送给自己
+        else:
+            chat = make_data(self, msg, self.current_user)
+            ChatWSHandler.send_updates(chat)
 
-    def send_updates(self, chat):
+    @classmethod  # 设置类方法
+    def send_updates(cls, chat):
         # 把新消息更新到history，截取最后20条消息记录
         ChatWSHandler.history.append(chat['html'])
         if len(ChatWSHandler.history) > ChatWSHandler.history_size:
